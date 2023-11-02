@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
 import { WeatherDatas } from 'src/app/Models/intefaces/WeatherDatas';
+import { Subject, takeUntil } from 'rxjs';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-wheather-home',
   templateUrl: './wheather-home.component.html',
   styleUrls: []
 })
-export class WheatherHomeComponent implements OnInit {
+export class WheatherHomeComponent implements OnInit, OnDestroy {
+  private readonly destroy$: Subject<void> = new Subject();
   initialCityName = 'Rio de Janeiro';
   weatherDatas!: WeatherDatas;
+  searchIcon = faMagnifyingGlass
+
 
   constructor(private weatherService: WeatherService){}
 
@@ -19,13 +24,25 @@ export class WheatherHomeComponent implements OnInit {
 
 
   getWeatherDatas(cityName: string): void{
-    this.weatherService.getWeatherDatas(cityName).subscribe({
-        next:(response: any) =>{
-          response && (this.weatherDatas =response)
-          console.log(this.weatherDatas)
-        },
-        error:(error: any)=>console.log(error),
-      });
+    this.weatherService.getWeatherDatas(cityName)
+    .pipe(
+      takeUntil(this.destroy$)
+    )
+    .subscribe({
+      next:(response: any) =>{
+        response && (this.weatherDatas =response)
+        console.log(this.weatherDatas)
+      },
+      error:(error: any)=>console.log(error),
+    });
   }
 
+  onSubmit(): void{
+    this.getWeatherDatas(this.initialCityName);
+    this.initialCityName = '';
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
