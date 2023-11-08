@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WheatherHomeComponent } from './Module/wheather/page/wheather-home/wheather-home.component';
+import { WeatherHomeComponent } from './Module/weather/page/weather-home/weather-home.component';
 
 const routes: Routes = [
   {
-    path:'',
-    redirectTo:'weather',
-    pathMatch:'full',
+    path: '',
+    redirectTo: 'weather',
+    pathMatch: 'full',
   },
   {
-    path:'weather',
-    component:WheatherHomeComponent
+    path: 'weather',
+    component: WeatherHomeComponent
   }
 ];
 

@@ -5,11 +5,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-wheather-home',
-  templateUrl: './wheather-home.component.html',
+  selector: 'app-weather-home',
+  templateUrl: './weather-home.component.html',
   styleUrls: []
 })
-export class WheatherHomeComponent implements OnInit, OnDestroy {
+export class WeatherHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   initialCityName = 'Rio de Janeiro';
   weatherDatas!: WeatherDatas;
